@@ -18,7 +18,8 @@ import { faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Container } from '@material-ui/core';
 import { useContext } from 'react';
 import { UserContext } from '../../App';
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -49,16 +50,16 @@ export default function SignIn() {
         password: '',
         photo: '',
         error: '',
-        success: false
+        success: false,
+        matchedPassword: false
     })
     const [loggedinUser, setLoggedInUser] = useContext(UserContext);
-    console.log(loggedinUser);
     let history = useHistory();
     let location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };
     const provider = new firebase.auth.GoogleAuthProvider();
     var fbProvider = new firebase.auth.FacebookAuthProvider();
-    
+
     const handleSignIn = () => {
         firebase.auth().signInWithPopup(provider)
             .then(res => {
@@ -102,6 +103,7 @@ export default function SignIn() {
             });
     }
     let isFromValid = true;
+    const [validPassword, setValidPassword] = useState('')
     const handleChange = (e) => {
         if (e.target.name === 'name') {
             user.name = e.target.value
@@ -110,9 +112,9 @@ export default function SignIn() {
             var re = /\S+@\S+\.\S+/;
             isFromValid = re.test(e.target.value)
             setUser[e.target.name] = e.target.value
-            console.log(user);
         }
         if (e.target.name === 'password') {
+            setValidPassword(e.target.value)
             const passwordLengthVaildation = e.target.value.length > 6
             const PasswordNumberValidation = /\d{1}/.test(e.target.value);
             isFromValid = (passwordLengthVaildation && PasswordNumberValidation);
@@ -123,9 +125,24 @@ export default function SignIn() {
             setUser(newUserInfo);
         }
     }
+    const matchPassword = (e) => {
+        if (e.target.name === 'confirmPassword') {
+            if (e.target.value === validPassword) {
+                const newUserInfo = { ...user }
+                newUserInfo.error = 'Password Matched'
+                newUserInfo.matchedPassword = true
+                setUser(newUserInfo);
+            }
+            else {
+                const newUserInfo = { ...user }
+                newUserInfo.error = 'Password is not matching'
+                newUserInfo.matchedPassword = false
+                setUser(newUserInfo);
+            }
+        }
+    }
     const handleSubmit = (e) => {
-        console.log(user.email, user.password);
-        if (newUser && user.email && user.password) {
+        if (newUser && user.email && user.password && user.matchedPassword) {
             firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
                 .then(res => {
                     console.log(res);
@@ -176,7 +193,7 @@ export default function SignIn() {
             console.log(error);
         });
     }
-    
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -226,7 +243,7 @@ export default function SignIn() {
                     {
                         newUser && <TextField
                             variant="outlined"
-                            onBlur={handleChange}
+                            onChange={matchPassword}
                             margin="normal"
                             required
                             fullWidth
@@ -236,7 +253,7 @@ export default function SignIn() {
                         />
                     }
                     {
-                        newUser ? <Button type="submit" fullWidth variant="contained" color="primary"  onClick={handleSubmit}>Sign Up</Button>
+                        newUser ? <Button type="submit" fullWidth variant="contained" color="primary" onClick={handleSubmit}>Sign Up</Button>
                             : <Button type="submit" fullWidth variant="contained" color="primary" onClick={handleSubmit}>Sign In</Button>
                     }
                     <p>{user.error}</p>
@@ -257,9 +274,9 @@ export default function SignIn() {
                 </form>
             </div>
             <div className='iconContainer'>
-            <h5>Sign In with</h5>
-            <FontAwesomeIcon className='signInIcon' onClick={handleSignIn} icon={faGoogle} />
-            <FontAwesomeIcon className='signInIcon' onClick={handleFbSignIn} icon={faFacebook} />
+                <h5>Sign In with</h5>
+                <FontAwesomeIcon className='signInIcon' onClick={handleSignIn} icon={faGoogle} />
+                <FontAwesomeIcon className='signInIcon' onClick={handleFbSignIn} icon={faFacebook} />
             </div>
         </Container>
     );

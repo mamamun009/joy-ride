@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './rideOption.css'
 import { Link } from 'react-router-dom';
+import Header from '../Header/Header';
 const RideOption = (props) => {
     const { vehicle, img } = props.data
     return (

@@ -1,7 +1,7 @@
 .locationInfo{
     background-color: rgba(239, 239, 239, 1);
     width: 350px;
-    height: 300px;
+    height: 350px;
     border-radius: 10px;
 }
 .location{
@@ -14,8 +14,8 @@
     border-radius: 10px;
     margin-top: 20px;
     width: 100%;
-    height: 80px;
-    text-align:center;
+    height: 120px;
+    text-align: left;
 }
 .vehicleType{
     border: 1px solid red;
@@ -29,5 +29,18 @@
     margin-top: 15px;
 }
 .vehicleType img{
-    width: 20%;
+    width: 15%;
+}
+.locationFromTO{
+    font-size: 20px;
+}
+.locationFrom img{
+    width: 10%;
+}
+.locationTo{
+    display: flex;
+    margin-top: 10px;
+}
+.locationTo img{
+    width: 10%;
 }

@@ -10,10 +10,10 @@ const Header = () => {
     return (
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand href="#home">Easy Ride</Navbar.Brand>
+                <Navbar.Brand href="#home">Joy Ride</Navbar.Brand>
                 <Nav className="mr-auto ml-5">
                     <Link to="/"><Button className="ml-5" variant="outline-info">Home</Button></Link>
-                    <Link to="/rideType/"><Button className="ml-5" variant="outline-info">Destination</Button></Link>
+                    <Link to={"/rideType/"}><Button className="ml-5" variant="outline-info">Destination</Button></Link>
                     <Link to="/"><Button className="ml-5" variant="outline-info">Blog</Button></Link>
                     <Link to="/"><Button className="ml-5" variant="outline-info">Contact</Button></Link>
                 </Nav>
