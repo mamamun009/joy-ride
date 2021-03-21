@@ -34,13 +34,3 @@
 .locationFromTO{
     font-size: 20px;
 }
-.locationFrom img{
-    width: 10%;
-}
-.locationTo{
-    display: flex;
-    margin-top: 10px;
-}
-.locationTo img{
-    width: 10%;
-}
